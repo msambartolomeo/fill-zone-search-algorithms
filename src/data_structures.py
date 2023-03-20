@@ -14,12 +14,16 @@ class Node:
         self._neighbors.add(n)
         n._neighbors.add(self)
 
+    def remove_neighbor(self, n: Node):
+        self._neighbors.remove(n)
+        n._neighbors.remove(self)
+
     @property
     def neighbors(self) -> Set[Node]:
         return self._neighbors
 
     def __str__(self):
-        return f"Color #{self.color}"
+        return f"Color#{self.color}, neighbors={[n.color for n in self.neighbors]}"
 
     def __repr__(self):
         return self.__str__()
@@ -30,6 +34,33 @@ class Node:
     @neighbors.setter
     def neighbors(self, value):
         self._neighbors = value
+
+    def _merge(self, child: Node) -> Node:
+        if child not in self.neighbors:
+            raise ValueError()
+        self.color = child.color
+        for n in child.neighbors.copy():
+            n.remove_neighbor(child)
+
+            if self != n:
+                self.add_neighbor(n)
+        return self
+
+    def change_color(self, color: int) -> Node:
+        root = self
+        for n in self.neighbors.copy():
+            if n.color == color:
+                root = self._merge(n)
+        return root
+
+    def print_tree(self, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(self)
+        print(self)
+        for n in self.neighbors:
+            if n not in visited:
+                n.print_tree(visited)
 
 
 dxy = [
