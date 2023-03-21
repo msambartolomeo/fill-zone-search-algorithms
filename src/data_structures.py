@@ -74,9 +74,14 @@ dxy = [
 ]
 
 
+def in_range(x, a, b) -> bool:
+    return a <= x < b
+
+
 class Graph:
     def __init__(self, root: Node):
         self.root = root
+
 
     @staticmethod
     def matrix_to_graph(matrix: List[List[int]]) -> Node:
@@ -99,7 +104,12 @@ class Graph:
                 while not q.empty():
                     curr_pos: Tuple[int, int] = q.get()
                     for dpos in dxy:
-                        new_pos = curr_pos + dpos
+                        new_pos = (curr_pos[0] + dpos[0], curr_pos[1] + dpos[1])
+                        if (not in_range(new_pos[0], 0, len(matrix)))\
+                                or (not in_range(new_pos[1], 0, len(matrix[0]))):
+                            continue
+
+                        logging.debug(f"Neighbours in {new_pos} as {curr_pos} + {dpos} in range ({0}, {len(matrix[0])}) which returns {in_range(new_pos[1], 0, len(matrix[0]))}")
                         if matrix[new_pos[0]][new_pos[1]] == curr_color and nodes[new_pos[0]][new_pos[1]] is None:
                             q.put((new_pos[0], new_pos[1]))
                             nodes[new_pos[0]][new_pos[1]] = curr_node
