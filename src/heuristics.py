@@ -1,6 +1,7 @@
+import heapq
 from abc import ABC
 from collections import deque
-import heapq
+
 from .data_structures import Node
 
 
@@ -8,6 +9,12 @@ class Heuristic(ABC):
     @staticmethod
     def calculate(state: Node) -> int:
         pass
+
+
+class DummyHeuristic(Heuristic):
+    @staticmethod
+    def calculate(state: Node) -> int:
+        return 0
 
 
 class DijkstraHeurstic(Heuristic):
