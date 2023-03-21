@@ -10,10 +10,10 @@ from .heuristics import Heuristic
 class SearchTree:
     def __init__(self, initial_state: Node, heuristic: Heuristic):
         self._heuristic = heuristic
-        estimate = self._heuristic.calculate(initial_state)
-        self._root = STNode(initial_state, 0, estimate)
-        self._frontier = PriorityQueue()
+        self._frontier: PriorityQueue = PriorityQueue()
+        self._root = STNode(self, initial_state, 0, None)
         self._frontier.put(self._root)
+        # TODO: Add explored_nodes
 
     def get_root(self):
         return self._root
@@ -24,14 +24,20 @@ class SearchTree:
     def search(self, algorithm) -> int:
         return algorithm.calculate(self)
 
+    def add_to_frontier(self, node: STNode):
+        self._frontier.put(node)
+
 
 @functools.total_ordering
 class STNode:  # Search Tree Node
-    def __init__(self, state: Node, cost: int, estimate: int):
+    def __init__(self, search_tree: SearchTree, state: Node, cost: int, parent: STNode):
+        self._parent = parent
+        self._search_tree = search_tree
         self._cost = cost
-        self._estimate = estimate
+        self._estimate = search_tree.get_heuristic().calculate(state)
         self._state = state
         self._children = set()
+        self._search_tree.add_to_frontier(self)
 
     def get_estimate(self):
         return self._estimate
@@ -54,3 +60,10 @@ class STNode:  # Search Tree Node
 
     def __hash__(self):
         return hash(self._state)
+
+    def expand(self):
+        colors = self._state.available_colors()
+        for c in colors:
+            new_state: Node = self._state.change_color(c)
+            new_node: STNode = STNode(self._search_tree, new_state, self._cost + 1, self)
+            self.add_child(new_node)
