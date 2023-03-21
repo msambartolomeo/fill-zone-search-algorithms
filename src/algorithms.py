@@ -4,19 +4,6 @@ from queue import PriorityQueue
 from .search_tree import SearchTree
 
 
-class SearchTreeNode:
-    def __init__(self, state, parent):
-        self.state = state
-        self.parent = parent
-        self.neighbours = set()
-
-    def expand(self):
-        raise NotImplemented()
-
-    def is_goal(self):
-        raise NotImplemented()
-
-
 class Algorithm(ABC):
     @staticmethod
     def calculate(tree: SearchTree):
@@ -61,7 +48,7 @@ class DfsAlgorithm(Algorithm):
                 stack.append(child)
 
 
-class Greedy(Algorithm):
+class GreedyAlgorithm(Algorithm):
     @staticmethod
     def calculate(tree: SearchTree):
         expanded = 0
@@ -84,7 +71,7 @@ class Greedy(Algorithm):
         pass
 
 
-class AStar(Algorithm):
+class AStarAlgorithm(Algorithm):
     @staticmethod
     def calculate(tree: SearchTree):
         expanded = 0

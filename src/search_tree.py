@@ -3,19 +3,17 @@ from __future__ import annotations
 import functools
 from queue import PriorityQueue
 
-from .algorithms import Algorithm
 from .data_structures import Node
 from .heuristics import Heuristic
 
 
 class SearchTree:
-    def __init__(self, initial_state: Node, heuristic: Heuristic | None, algorithm: Algorithm):
+    def __init__(self, initial_state: Node, heuristic: Heuristic):
         self._heuristic = heuristic
         estimate = self._heuristic.calculate(initial_state)
         self._root = STNode(initial_state, 0, estimate)
         self._frontier = PriorityQueue()
         self._frontier.put(self._root)
-        self._algorithm = algorithm
 
     def get_root(self):
         return self._root
@@ -23,8 +21,8 @@ class SearchTree:
     def get_heuristic(self):
         return self._heuristic
 
-    def search(self) -> int:
-        return self._algorithm.calculate(self)
+    def search(self, algorithm) -> int:
+        return algorithm.calculate(self)
 
 
 @functools.total_ordering
