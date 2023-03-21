@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import functools
 from queue import PriorityQueue
+from typing import Set
 
 from .data_structures import Node
 from .heuristics import Heuristic
@@ -22,7 +23,7 @@ class SearchTree:
         return self._heuristic
 
     def search(self, algorithm) -> int:
-        return algorithm.calculate(self)
+        return algorithm.search(self)
 
     def add_to_frontier(self, node: STNode):
         self._frontier.put(node)
@@ -61,9 +62,15 @@ class STNode:  # Search Tree Node
     def __hash__(self):
         return hash(self._state)
 
-    def expand(self):
+    def __repr__(self):
+        return str(self._state)
+
+    def expand(self) -> Set[STNode]:
         colors = self._state.available_colors()
+        new_nodes: Set[STNode] = set()
         for c in colors:
             new_state: Node = self._state.change_color(c)
             new_node: STNode = STNode(self._search_tree, new_state, self._cost + 1, self)
             self.add_child(new_node)
+            new_nodes.add(new_node)
+        return new_nodes
