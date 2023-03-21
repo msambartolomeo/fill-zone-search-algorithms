@@ -1,7 +1,20 @@
 from __future__ import annotations
+
+from copy import copy, deepcopy
 from typing import List, Set, Optional, Tuple
 from queue import Queue
 import logging
+
+dxy = [
+    (0, 1),
+    (0, -1),
+    (1, 0),
+    (-1, 0)
+]
+
+
+def in_range(x, a, b) -> bool:
+    return a <= x < b
 
 
 class Node:
@@ -50,11 +63,25 @@ class Node:
         return self
 
     def change_color(self, color: int) -> Node:
-        root = self
-        for n in self.neighbors.copy():
+        root = deepcopy(self)
+        for n in root.neighbors.copy():
             if n.color == color:
-                root = self._merge(n)
+                root._merge(n)
         return root
+
+    def available_colors(self) -> Set[int]:
+        ans = set()
+        for n in self.neighbors:
+            ans.add(n.color)
+        return ans
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
 
     def print_tree(self, visited=None):
         if visited is None:
@@ -64,24 +91,6 @@ class Node:
         for n in self.neighbors:
             if n not in visited:
                 n.print_tree(visited)
-
-
-dxy = [
-    (0, 1),
-    (0, -1),
-    (1, 0),
-    (-1, 0)
-]
-
-
-def in_range(x, a, b) -> bool:
-    return a <= x < b
-
-
-class Graph:
-    def __init__(self, root: Node):
-        self.root = root
-
 
     @staticmethod
     def matrix_to_graph(matrix: List[List[int]]) -> Node:
@@ -105,11 +114,12 @@ class Graph:
                     curr_pos: Tuple[int, int] = q.get()
                     for dpos in dxy:
                         new_pos = (curr_pos[0] + dpos[0], curr_pos[1] + dpos[1])
-                        if (not in_range(new_pos[0], 0, len(matrix)))\
+                        if (not in_range(new_pos[0], 0, len(matrix))) \
                                 or (not in_range(new_pos[1], 0, len(matrix[0]))):
                             continue
 
-                        logging.debug(f"Neighbours in {new_pos} as {curr_pos} + {dpos} in range ({0}, {len(matrix[0])}) which returns {in_range(new_pos[1], 0, len(matrix[0]))}")
+                        logging.debug(
+                            f"Neighbours in {new_pos} as {curr_pos} + {dpos} in range ({0}, {len(matrix[0])}) which returns {in_range(new_pos[1], 0, len(matrix[0]))}")
                         if matrix[new_pos[0]][new_pos[1]] == curr_color and nodes[new_pos[0]][new_pos[1]] is None:
                             q.put((new_pos[0], new_pos[1]))
                             nodes[new_pos[0]][new_pos[1]] = curr_node
