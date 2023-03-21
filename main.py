@@ -44,8 +44,7 @@ def generate_board(board_settings):
         case "random":
             n = board_settings["board_size"]
             m = board_settings["color_count"]
-            # TODO: Generate matrix
-            raise NotImplemented()
+            return np.random.randint(0, m, (n, n))
         case _:
             raise ValueError("Unsupported board generation method")
 
