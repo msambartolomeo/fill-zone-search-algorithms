@@ -1,11 +1,10 @@
 import json
 import logging
 import sys
-
 import numpy as np
 
 from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
-from src.data_structures import Graph
+from src.data_structures import Node
 from src.heuristics import DummyHeuristic, DijkstraHeurstic, ColorCountHeuristic
 from src.search_tree import SearchTree
 
@@ -60,14 +59,14 @@ def main():
     logging.basicConfig(level=logging.getLevelName(config["logging_level"]))
     board_settings = config["board_settings"]
 
-    A = generate_board(board_settings)
-    G = Graph.matrix_to_graph(A)
+    a = generate_board(board_settings)
+    g = Node.matrix_to_graph(a)
 
     search_settings = config["search_settings"]
     algorithm = get_algorithm(search_settings)
     heuristic = get_heuristic(search_settings)
 
-    search_tree = SearchTree(G, heuristic)
+    search_tree = SearchTree(g, heuristic)
 
     expanded = search_tree.search(algorithm)
 
