@@ -22,6 +22,9 @@ class Node:
     def neighbors(self) -> Set[Node]:
         return self._neighbors
 
+    def is_solution(self) -> bool:
+        return len(self._neighbors) == 0
+
     def __str__(self):
         return f"Color#{self.color}, neighbors={[n.color for n in self.neighbors]}"
 
