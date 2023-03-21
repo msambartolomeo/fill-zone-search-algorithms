@@ -17,7 +17,7 @@ class DummyHeuristic(Heuristic):
         return 0
 
 
-class DijkstraHeurstic(Heuristic):
+class DijkstraHeuristic(Heuristic):
     @staticmethod
     def calculate(state: Node) -> int:
         distances = {state: 0}

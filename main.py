@@ -1,11 +1,12 @@
 import json
 import logging
 import sys
+
 import numpy as np
 
 from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
 from src.data_structures import Node
-from src.heuristics import DummyHeuristic, DijkstraHeurstic, ColorCountHeuristic
+from src.heuristics import DummyHeuristic, ColorCountHeuristic, DijkstraHeuristic
 from src.search_tree import SearchTree
 
 
@@ -29,7 +30,7 @@ def get_heuristic(search_settings):
 
     match search_settings["heuristic"]:
         case "dijkstra":
-            return DijkstraHeurstic()
+            return DijkstraHeuristic()
         case "color_count":
             return ColorCountHeuristic()
         case _:
