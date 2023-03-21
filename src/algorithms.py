@@ -3,11 +3,25 @@ from queue import PriorityQueue, Queue
 from typing import Optional, List, Tuple, Set
 
 from .search_tree import SearchTree, STNode
-from .visuals import draw_graph
+
+
+def get_solution(node: STNode) -> List[int]:
+    solution = [node.get_color()]
+    parent = node.get_parent()
+
+    while parent is not None:
+        solution.append(parent.get_color())
+        parent = parent.get_parent()
+
+    # delete starting color
+    solution.pop()
+
+    solution.reverse()
+    return solution
 
 
 class Algorithm(ABC):
-    def search(self, tree: SearchTree) -> Optional[int]:
+    def search(self, tree: SearchTree) -> Optional[Tuple[int, List[int]]]:
         expanded = 0
         frontier = self._create_frontier()
         self._add_to_frontier(frontier, tree.get_root())
@@ -16,10 +30,9 @@ class Algorithm(ABC):
         while not self._frontier_is_empty(frontier):
             curr_node = self._get_from_frontier(frontier)
             visited.add(curr_node)
-            draw_graph(curr_node._state)
 
             if curr_node.is_solution():
-                return expanded
+                return expanded, get_solution(curr_node)
 
             # Expand node
             expanded += 1

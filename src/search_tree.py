@@ -31,7 +31,7 @@ class SearchTree:
 
 @functools.total_ordering
 class STNode:  # Search Tree Node
-    def __init__(self, search_tree: SearchTree, state: Node, cost: int, parent: STNode):
+    def __init__(self, search_tree: SearchTree, state: Node, cost: int, parent: STNode | None):
         self._parent = parent
         self._search_tree = search_tree
         self._cost = cost
@@ -51,6 +51,12 @@ class STNode:  # Search Tree Node
 
     def is_solution(self) -> bool:
         return self._state.is_solution()
+
+    def get_parent(self) -> STNode | None:
+        return self._parent
+
+    def get_color(self) -> int:
+        return self._state.color
 
     def __lt__(self, other: STNode):
         return (self._cost + self._estimate) < (other._cost + other._estimate)
