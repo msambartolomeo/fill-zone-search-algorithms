@@ -13,3 +13,9 @@ class FillZoneAction(Action):
 
     def __hash__(self):
         return hash(self._color)
+
+    def __str__(self):
+        return f"{self._color}"
+
+    def __repr__(self):
+        return str(self)

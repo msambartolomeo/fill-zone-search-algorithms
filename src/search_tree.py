@@ -4,7 +4,6 @@ import functools
 from queue import PriorityQueue
 from typing import Set, Optional
 
-from src.fill_zone.data_structures import Node
 from .action import Action
 from .heuristics import Heuristic
 from .state import State
@@ -14,7 +13,7 @@ class SearchTree:
     def __init__(self, initial_state: State, heuristic: Heuristic):
         self._heuristic = heuristic
         self._frontier: PriorityQueue = PriorityQueue()
-        self._root = STNode(self, initial_state, 0, None)
+        self._root = STNode(self, initial_state, 0, None, None)
         self._frontier.put(self._root)
         # TODO: Add explored_nodes
 

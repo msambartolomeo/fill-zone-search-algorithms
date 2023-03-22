@@ -14,7 +14,6 @@ def get_solution(node: STNode) -> List[Action]:
         solution.append(parent.get_action())
         parent = parent.get_parent()
 
-    # delete starting color
     solution.pop()
 
     solution.reverse()
@@ -30,6 +29,9 @@ class Algorithm(ABC):
 
         while not self._frontier_is_empty(frontier):
             curr_node = self._get_from_frontier(frontier)
+            if curr_node in visited:
+                continue
+
             visited.add(curr_node)
 
             if curr_node.is_solution():

@@ -5,7 +5,6 @@ from typing import Set, Tuple, List, Optional
 
 import networkx as nx
 import numpy as np
-from matplotlib import pyplot as plt
 
 from src.fill_zone.action import FillZoneAction
 from src.fill_zone.data_structures import Node
@@ -65,6 +64,13 @@ class FillZoneGraphState(State):
         for k, v in self.__dict__.items():
             setattr(result, k, deepcopy(v, memo))
         return result
+
+    def __eq__(self, other):
+        return isinstance(other, FillZoneGraphState) and nx.utils.graphs_equal(self._graph,
+                                                                               other._graph) and self._root == other._root
+
+    def __hash__(self):
+        return hash((nx.weisfeiler_lehman_graph_hash(self._graph), self._root))
 
     def get_neighbors(self, node: Node):
         return self.graph[node]
