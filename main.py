@@ -5,7 +5,6 @@ import sys
 import numpy as np
 
 from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
-from src.fill_zone.data_structures import Node
 from src.fill_zone.heuristics import ColorCountHeuristic, DijkstraHeuristic
 from src.fill_zone.state import FillZoneGraphState
 from src.heuristics import DummyHeuristic
