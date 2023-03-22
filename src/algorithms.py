@@ -1,8 +1,9 @@
 from abc import ABC
 from queue import PriorityQueue, Queue
-from typing import Optional, List, Tuple, Set
+from typing import List, Tuple, Set
 
 from .action import Action
+from .result import Result
 from .search_tree import SearchTree, STNode
 
 
@@ -22,7 +23,7 @@ def get_solution(node: STNode) -> List[Action]:
 
 
 class Algorithm(ABC):
-    def search(self, tree: SearchTree) -> Optional[Tuple[int, List[int]]]:
+    def search(self, tree: SearchTree) -> Result:
         expanded = 0
         frontier = self._create_frontier()
         self._add_to_frontier(frontier, tree.get_root())
@@ -36,14 +37,14 @@ class Algorithm(ABC):
             visited.add(curr_node)
 
             if curr_node.is_solution():
-                return expanded, get_solution(curr_node)
+                return Result(curr_node.get_cost(), expanded, self._frontier_length(frontier), get_solution(curr_node))
 
             # Expand node
             expanded += 1
             for child in curr_node.expand():
                 self._add_to_frontier(frontier, child)
 
-        return None
+        return Result.empty(expanded)
 
     def _create_frontier(self):
         raise NotImplementedError()
@@ -55,6 +56,9 @@ class Algorithm(ABC):
         raise NotImplementedError()
 
     def _frontier_is_empty(self, frontier) -> bool:
+        raise NotImplementedError()
+
+    def _frontier_length(self, frontier) -> int:
         raise NotImplementedError()
 
 
@@ -71,6 +75,9 @@ class BfsAlgorithm(Algorithm):
     def _frontier_is_empty(self, frontier: Queue[STNode]) -> bool:
         return frontier.empty()
 
+    def _frontier_length(self, frontier: Queue[STNode]) -> int:
+        return frontier.qsize()
+
 
 class DfsAlgorithm(Algorithm):
     def _create_frontier(self) -> List[STNode]:
@@ -84,6 +91,9 @@ class DfsAlgorithm(Algorithm):
 
     def _frontier_is_empty(self, frontier: List[STNode]) -> bool:
         return len(frontier) == 0
+
+    def _frontier_length(self, frontier: List[STNode]) -> int:
+        return len(frontier)
 
 
 class GreedyAlgorithm(Algorithm):
@@ -100,6 +110,9 @@ class GreedyAlgorithm(Algorithm):
     def _frontier_is_empty(self, frontier: PriorityQueue[Tuple[int, STNode]]) -> bool:
         return frontier.empty()
 
+    def _frontier_length(self, frontier: PriorityQueue[Tuple[int, STNode]]) -> int:
+        return frontier.qsize()
+
 
 class AStarAlgorithm(Algorithm):
     def _create_frontier(self) -> PriorityQueue[Tuple[int, STNode]]:
@@ -114,3 +127,6 @@ class AStarAlgorithm(Algorithm):
 
     def _frontier_is_empty(self, frontier: PriorityQueue[Tuple[int, STNode]]) -> bool:
         return frontier.empty()
+
+    def _frontier_length(self, frontier: PriorityQueue[Tuple[int, STNode]]) -> int:
+        return frontier.qsize()

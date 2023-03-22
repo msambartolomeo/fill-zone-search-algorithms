@@ -5,6 +5,7 @@ from typing import Set, Optional
 
 from .action import Action
 from .heuristics import Heuristic
+from .result import Result
 from .state import State
 
 
@@ -19,7 +20,7 @@ class SearchTree:
     def get_heuristic(self):
         return self._heuristic
 
-    def search(self, algorithm) -> int:
+    def search(self, algorithm) -> Result:
         return algorithm.search(self)
 
 

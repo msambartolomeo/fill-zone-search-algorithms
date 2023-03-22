@@ -8,6 +8,7 @@ from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlg
 from src.fill_zone.heuristics import ColorCountHeuristic, EccentricityHeuristic
 from src.fill_zone.state import FillZoneGraphState
 from src.heuristics import DummyHeuristic
+from src.result import Result
 from src.search_tree import SearchTree
 from src.state import State
 
@@ -70,9 +71,12 @@ def main():
 
     search_tree: SearchTree = SearchTree(g, heuristic)
 
-    expanded = search_tree.search(algorithm)
+    result: Result = search_tree.search(algorithm)
 
-    print("expanded nodes: ", expanded)
+    print("expanded nodes: ", result.expanded_nodes)
+    print("solution found: ", result.solution)
+    print("cost of solution: ", result.cost)
+    print("nodes on frontier: ", result.frontier_nodes)
 
 
 if __name__ == "__main__":
