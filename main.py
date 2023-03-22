@@ -5,7 +5,7 @@ import sys
 import numpy as np
 
 from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
-from src.fill_zone.heuristics import ColorCountHeuristic, DijkstraHeuristic
+from src.fill_zone.heuristics import ColorCountHeuristic, EccentricityHeuristic
 from src.fill_zone.state import FillZoneGraphState
 from src.heuristics import DummyHeuristic
 from src.search_tree import SearchTree
@@ -31,8 +31,8 @@ def get_heuristic(search_settings):
         return DummyHeuristic()
 
     match search_settings["heuristic"]:
-        case "dijkstra":
-            return DijkstraHeuristic()
+        case "eccentricity":
+            return EccentricityHeuristic()
         case "color_count":
             return ColorCountHeuristic()
         case _:

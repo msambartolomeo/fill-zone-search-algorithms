@@ -1,17 +1,17 @@
 import heapq
-from collections import deque
-from typing import Set
+from numbers import Number
+from typing import Set, Dict
 
+from src.fill_zone.data_structures import Node
 from src.fill_zone.state import FillZoneGraphState
 from src.heuristics import Heuristic
 
 
-class DijkstraHeuristic(Heuristic):
-    # TODO: Check
+class EccentricityHeuristic(Heuristic):
     @staticmethod
     def calculate(state: FillZoneGraphState) -> int:
-        distances = {state: 0}
-        unvisited = [(0, state)]
+        distances: Dict[Node, int] = {state.root: 0}
+        unvisited = [(0, state.root)]
         max_distance = 0
 
         while unvisited:
@@ -20,7 +20,7 @@ class DijkstraHeuristic(Heuristic):
             if current in distances and dist > distances[current]:
                 continue
 
-            for neighbor in current.neighbors:
+            for neighbor in state.graph.neighbors(current):
                 new_distance = distances[current] + 1
 
                 if neighbor not in distances or new_distance < distances[neighbor]:
