@@ -1,6 +1,7 @@
 from abc import ABC
+from copy import deepcopy
 from queue import PriorityQueue, Queue
-from typing import Optional, List, Tuple, Set
+from typing import List, Tuple, Set, Callable
 
 from .search_tree import SearchTree, STNode
 
@@ -21,7 +22,7 @@ def get_solution(node: STNode) -> List[int]:
 
 
 class Algorithm(ABC):
-    def search(self, tree: SearchTree) -> Optional[Tuple[int, List[int]]]:
+    def search(self, tree: SearchTree) -> Tuple[int, List[int], int]:
         expanded = 0
         frontier = self._create_frontier()
         self._add_to_frontier(frontier, tree.get_root())
@@ -32,14 +33,14 @@ class Algorithm(ABC):
             visited.add(curr_node)
 
             if curr_node.is_solution():
-                return expanded, get_solution(curr_node)
+                return expanded, get_solution(curr_node), curr_node.get_cost()
 
             # Expand node
             expanded += 1
             for child in curr_node.expand():
                 self._add_to_frontier(frontier, child)
 
-        return None
+        return expanded, [], 0
 
     def _create_frontier(self):
         raise NotImplementedError()
@@ -110,3 +111,33 @@ class AStarAlgorithm(Algorithm):
 
     def _frontier_is_empty(self, frontier: PriorityQueue[Tuple[int, STNode]]) -> bool:
         return frontier.empty()
+
+
+class IDDFSAlgorithm(Algorithm):
+    def search(self, tree: SearchTree) -> Tuple[int, List[int], int]:
+        test_tree = deepcopy(tree)
+        expanded = 0
+
+        while len((result := super().search(test_tree))[1]) == 0:
+            self._depth = self._update_depth(self._depth)
+            test_tree = deepcopy(tree)
+            expanded += result[0]
+
+        return expanded + result[0], result[1], result[2]
+
+    def __init__(self, depth: int, update_depth: Callable[[int], int]):
+        self._depth = depth
+        self._update_depth = update_depth
+
+    def _create_frontier(self) -> List[STNode]:
+        return []
+
+    def _add_to_frontier(self, frontier: List[STNode], node: STNode):
+        if node.get_cost() <= self._depth:
+            frontier.append(node)
+
+    def _get_from_frontier(self, frontier: List[STNode]) -> STNode:
+        return frontier.pop()
+
+    def _frontier_is_empty(self, frontier: List[STNode]) -> bool:
+        return len(frontier) == 0

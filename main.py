@@ -4,7 +4,7 @@ import sys
 
 import numpy as np
 
-from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
+from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm, IDDFSAlgorithm
 from src.data_structures import Node
 from src.heuristics import DummyHeuristic, ColorCountHeuristic, DijkstraHeuristic
 from src.search_tree import SearchTree
@@ -20,6 +20,8 @@ def get_algorithm(search_settings):
             return GreedyAlgorithm()
         case "A*":
             return AStarAlgorithm()
+        case "iddfs":
+            return IDDFSAlgorithm(search_settings["depth"], lambda depth: depth + search_settings["update_depth"])
         case _:
             raise ValueError("Unsupported search algorithm")
 
@@ -68,9 +70,11 @@ def main():
 
     search_tree = SearchTree(g, heuristic)
 
-    expanded = search_tree.search(algorithm)
+    expanded, solution, cost = search_tree.search(algorithm)
 
     print("expanded nodes: ", expanded)
+    print("solution found: ", solution)
+    print("cost of solution: ", cost)
 
 
 if __name__ == "__main__":
