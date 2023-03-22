@@ -4,12 +4,13 @@ import functools
 from queue import PriorityQueue
 from typing import Set
 
-from .data_structures import Node
+from src.fill_zone.data_structures import Node
 from .heuristics import Heuristic
+from .state import State
 
 
 class SearchTree:
-    def __init__(self, initial_state: Node, heuristic: Heuristic):
+    def __init__(self, initial_state: State, heuristic: Heuristic):
         self._heuristic = heuristic
         self._frontier: PriorityQueue = PriorityQueue()
         self._root = STNode(self, initial_state, 0, None)
@@ -31,7 +32,7 @@ class SearchTree:
 
 @functools.total_ordering
 class STNode:  # Search Tree Node
-    def __init__(self, search_tree: SearchTree, state: Node, cost: int, parent: STNode | None):
+    def __init__(self, search_tree: SearchTree, state: State, cost: int, parent: STNode | None):
         self._parent = parent
         self._search_tree = search_tree
         self._cost = cost

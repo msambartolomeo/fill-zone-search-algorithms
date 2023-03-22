@@ -5,8 +5,9 @@ import sys
 import numpy as np
 
 from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
-from src.data_structures import Node
-from src.heuristics import DummyHeuristic, ColorCountHeuristic, DijkstraHeuristic
+from src.fill_zone.data_structures import Node
+from src.fill_zone.heuristics import ColorCountHeuristic, DijkstraHeuristic
+from src.heuristics import DummyHeuristic
 from src.search_tree import SearchTree
 
 

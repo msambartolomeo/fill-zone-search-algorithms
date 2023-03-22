@@ -7,8 +7,8 @@ import networkx as nx
 import numpy as np
 from matplotlib import pyplot as plt
 
-from src.data_structures import Node
 from src.fill_zone.action import FillZoneAction
+from src.fill_zone.data_structures import Node
 from src.state import State
 
 
@@ -69,6 +69,17 @@ class FillZoneGraphState(State):
             setattr(result, k, deepcopy(v, memo))
         return result
 
+    def get_neighbors(self, node: Node):
+        return self.graph[node]
+
+    @property
+    def root(self):
+        return self._root
+
+    @property
+    def graph(self):
+        return self._graph
+
 
 dxy = [
     (0, 1),
@@ -120,7 +131,7 @@ def matrix_to_graph(matrix: List[List[int]]) -> Tuple[Node, nx.Graph]:
 
 if __name__ == "__main__":
     mat = np.mat("4,5,5,3;4,3,0,3;3,4,0,2;1,5,1,0").tolist()
-    
+
     state = FillZoneGraphState(mat)
 
     state = state.apply(FillZoneAction(5))
