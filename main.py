@@ -5,9 +5,11 @@ import sys
 import numpy as np
 
 from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
-from src.data_structures import Node
-from src.heuristics import DummyHeuristic, ColorCountHeuristic, DijkstraHeuristic
+from src.fill_zone.heuristics import ColorCountHeuristic, EccentricityHeuristic
+from src.fill_zone.state import FillZoneGraphState
+from src.heuristics import DummyHeuristic
 from src.search_tree import SearchTree
+from src.state import State
 
 
 def get_algorithm(search_settings):
@@ -29,8 +31,8 @@ def get_heuristic(search_settings):
         return DummyHeuristic()
 
     match search_settings["heuristic"]:
-        case "dijkstra":
-            return DijkstraHeuristic()
+        case "eccentricity":
+            return EccentricityHeuristic()
         case "color_count":
             return ColorCountHeuristic()
         case _:
@@ -60,13 +62,13 @@ def main():
     board_settings = config["board_settings"]
 
     a = generate_board(board_settings)
-    g = Node.matrix_to_graph(a)
+    g: State = FillZoneGraphState(a)
 
     search_settings = config["search_settings"]
     algorithm = get_algorithm(search_settings)
     heuristic = get_heuristic(search_settings)
 
-    search_tree = SearchTree(g, heuristic)
+    search_tree: SearchTree = SearchTree(g, heuristic)
 
     expanded = search_tree.search(algorithm)
 

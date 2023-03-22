@@ -1,8 +1,10 @@
-import networkx as nx
-from .data_structures import Node
 from queue import Queue
 from typing import Set
+
 import matplotlib.pyplot as plt
+import networkx as nx
+
+from src.fill_zone.data_structures import Node
 
 
 def draw_graph(root: Node):

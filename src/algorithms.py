@@ -2,19 +2,20 @@ from abc import ABC
 from queue import PriorityQueue, Queue
 from typing import Optional, List, Tuple, Set
 
+from .action import Action
 from .search_tree import SearchTree, STNode
 
 
-def get_solution(node: STNode) -> List[int]:
-    solution = [node.get_color()]
+def get_solution(node: STNode) -> List[Action]:
+    action = node.get_action()
     parent = node.get_parent()
 
-    while parent is not None:
-        solution.append(parent.get_color())
-        parent = parent.get_parent()
+    solution = [action]
 
-    # delete starting color
-    solution.pop()
+    while parent is not None and action is not None:
+        solution.append(parent.get_action())
+        parent = parent.get_parent()
+        action = parent.get_action()
 
     solution.reverse()
     return solution
@@ -29,6 +30,9 @@ class Algorithm(ABC):
 
         while not self._frontier_is_empty(frontier):
             curr_node = self._get_from_frontier(frontier)
+            if curr_node in visited:
+                continue
+
             visited.add(curr_node)
 
             if curr_node.is_solution():
