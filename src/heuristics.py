@@ -1,6 +1,7 @@
 import heapq
 from abc import ABC
 from collections import deque
+from copy import deepcopy
 
 from .data_structures import Node
 
@@ -9,6 +10,14 @@ class Heuristic(ABC):
     @staticmethod
     def calculate(state: Node) -> int:
         pass
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
 
 
 class DummyHeuristic(Heuristic):

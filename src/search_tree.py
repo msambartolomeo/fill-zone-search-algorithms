@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import functools
-from queue import PriorityQueue
+from copy import deepcopy
 from typing import Set
 
 from .data_structures import Node
@@ -11,9 +11,7 @@ from .heuristics import Heuristic
 class SearchTree:
     def __init__(self, initial_state: Node, heuristic: Heuristic):
         self._heuristic = heuristic
-        self._frontier: PriorityQueue = PriorityQueue()
         self._root = STNode(self, initial_state, 0, None)
-        self._frontier.put(self._root)
         # TODO: Add explored_nodes
 
     def get_root(self):
@@ -25,8 +23,13 @@ class SearchTree:
     def search(self, algorithm) -> int:
         return algorithm.search(self)
 
-    def add_to_frontier(self, node: STNode):
-        self._frontier.put(node)
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
 
 
 @functools.total_ordering
@@ -38,7 +41,6 @@ class STNode:  # Search Tree Node
         self._estimate = search_tree.get_heuristic().calculate(state)
         self._state = state
         self._children = set()
-        self._search_tree.add_to_frontier(self)
 
     def get_estimate(self):
         return self._estimate
@@ -80,3 +82,11 @@ class STNode:  # Search Tree Node
             self.add_child(new_node)
             new_nodes.add(new_node)
         return new_nodes
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
