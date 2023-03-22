@@ -19,12 +19,13 @@ class FillZoneState(State):
 
     def get_possible_actions(self) -> Set[FillZoneAction]:
         actions = set()
-        for n in self._root.neighbors:
+        for n in self._graph.neighbors(self._root):
+            assert isinstance(n, Node)
             actions.add(FillZoneAction(n.color))
         return actions
 
     def apply(self, action: FillZoneAction) -> State:
-        new_state: FillZoneState = deepcopy(self)
+        new_state: FillZoneGraphState = deepcopy(self)
         new_state._root.color = action.get_color()
         for n in new_state._root.neighbors.copy():
             if n.color == action:
@@ -33,9 +34,9 @@ class FillZoneState(State):
 
     def _merge_to_root(self, child: Node):
         for n in child.neighbors.copy():
-            n.remove_neighbor(child)
+            self._graph.remove_edge(n, child)
             if self._root != n:
-                self._root.add_neighbor(n)
+                self._graph.add_edge(n, self)
 
     def __deepcopy__(self, memo):
         cls = self.__class__

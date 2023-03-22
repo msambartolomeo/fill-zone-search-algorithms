@@ -19,9 +19,10 @@ def in_range(x, a, b) -> bool:
 
 class Node:
 
-    def __init__(self, color):
+    def __init__(self, color, node_id):
+        self._id = node_id
         self.color = color
-        self._neighbors = set()
+        # self._neighbors = set()
 
     def add_neighbor(self, n: Node):
         self._neighbors.add(n)
