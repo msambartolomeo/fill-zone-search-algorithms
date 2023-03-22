@@ -3,7 +3,7 @@ from .heuristics import *
 
 
 def get_all_algorithms() -> List[Algorithm]:
-    ans = [DfsAlgorithm(), GreedyAlgorithm(), AStarAlgorithm()]
+    ans = [BfsAlgorithm(), DfsAlgorithm(), GreedyAlgorithm(), AStarAlgorithm()]
     return ans
 
 
