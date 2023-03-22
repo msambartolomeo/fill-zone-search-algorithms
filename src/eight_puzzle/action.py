@@ -1,6 +1,6 @@
 from enum import Enum
 
-from ..action import Action
+from src.action import Action
 
 
 class EightPuzzleAction(Action, Enum):
