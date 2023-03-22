@@ -1,6 +1,8 @@
 from abc import ABC
 from typing import Set
 
+from .action import Action
+
 
 class State(ABC):
 
