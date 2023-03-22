@@ -9,4 +9,7 @@ class FillZoneAction(Action):
         return self._color
 
     def __eq__(self, other):
-        return other == self._color or (isinstance(other, FillZoneAction) and other._color == self._color)
+        return isinstance(other, FillZoneAction) and other._color == self._color
+
+    def __hash__(self):
+        return hash(self._color)
