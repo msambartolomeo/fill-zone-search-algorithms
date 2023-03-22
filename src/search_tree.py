@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import functools
 from queue import PriorityQueue
-from typing import Set
+from typing import Set, Optional
 
 from src.fill_zone.data_structures import Node
 from .action import Action
@@ -33,8 +33,9 @@ class SearchTree:
 
 @functools.total_ordering
 class STNode:  # Search Tree Node
-    def __init__(self, search_tree: SearchTree, state: State, cost: int, parent: STNode | None):
+    def __init__(self, search_tree: SearchTree, state: State, cost: int, parent: Optional[STNode], action: Action):
         self._parent = parent
+        self._action = action
         self._search_tree = search_tree
         self._cost = cost
         self._estimate = search_tree.get_heuristic().calculate(state)
@@ -57,8 +58,8 @@ class STNode:  # Search Tree Node
     def get_parent(self) -> STNode | None:
         return self._parent
 
-    def get_color(self) -> int:
-        return self._state.color
+    def get_action(self) -> Action:
+        return self._action
 
     def __lt__(self, other: STNode):
         return (self._cost + self._estimate) < (other._cost + other._estimate)
@@ -78,7 +79,7 @@ class STNode:  # Search Tree Node
         new_nodes: Set[STNode] = set()
         for a in actions:
             new_state: State = self._state.apply(a)
-            new_node: STNode = STNode(self._search_tree, new_state, self._cost + 1, self)
+            new_node: STNode = STNode(self._search_tree, new_state, self._cost + 1, self, a)
             self.add_child(new_node)
             new_nodes.add(new_node)
         return new_nodes

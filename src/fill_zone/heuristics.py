@@ -47,3 +47,5 @@ class ColorCountHeuristic(Heuristic):
                 count += 1
 
         return count
+
+

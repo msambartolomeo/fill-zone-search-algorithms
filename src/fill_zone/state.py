@@ -49,9 +49,6 @@ class FillZoneGraphState(State):
         for child in root_edges:
             new_state._graph.add_edge(child, new_state._root)
 
-        nx.draw(new_state._graph, with_labels=True)
-        plt.show()
-
         return new_state
 
     def _merge_to_root(self, child: Node):

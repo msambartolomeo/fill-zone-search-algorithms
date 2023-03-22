@@ -2,15 +2,16 @@ from abc import ABC
 from queue import PriorityQueue, Queue
 from typing import Optional, List, Tuple, Set
 
+from .action import Action
 from .search_tree import SearchTree, STNode
 
 
-def get_solution(node: STNode) -> List[int]:
-    solution = [node.get_color()]
+def get_solution(node: STNode) -> List[Action]:
+    solution = [node.get_action()]
     parent = node.get_parent()
 
     while parent is not None:
-        solution.append(parent.get_color())
+        solution.append(parent.get_action())
         parent = parent.get_parent()
 
     # delete starting color
