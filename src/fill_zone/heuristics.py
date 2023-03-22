@@ -1,5 +1,6 @@
 import heapq
 from collections import deque
+from typing import Set
 
 from src.fill_zone.state import FillZoneGraphState
 from src.heuristics import Heuristic
@@ -34,24 +35,14 @@ class DijkstraHeuristic(Heuristic):
 class ColorCountHeuristic(Heuristic):
     @staticmethod
     def calculate(state: FillZoneGraphState) -> int:
-        colors = set()
-        count = 1
+        colors: Set[int] = set()
+        count: int = 0
 
-        visited = set()
-        queue = deque([state.root])
-        visited.add(state.root)
-        colors.add(state.color)
+        for n in state.graph.nodes():
+            if n == state.root:
+                continue
+            if n.color not in colors:
+                colors.add(n.color)
+                count += 1
 
-        while queue:
-            current = queue.popleft()
-
-            for neighbor in current.neighbors:
-
-                if neighbor not in visited:
-
-                    visited.add(neighbor)
-                    queue.append(neighbor)
-                    if neighbor.color not in colors:
-                        colors.add(neighbor.color)
-                        count += 1
         return count
