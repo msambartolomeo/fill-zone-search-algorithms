@@ -23,7 +23,7 @@ def get_solution(node: STNode) -> List[Action]:
 
 
 class Algorithm(ABC):
-    def search(self, tree: SearchTree) -> Tuple[int, List[int], int]:
+    def search(self, tree: SearchTree) -> Tuple[int, List[Action], int]:
         expanded = 0
         frontier = self._create_frontier()
         self._add_to_frontier(frontier, tree.get_root())
@@ -118,7 +118,7 @@ class AStarAlgorithm(Algorithm):
 
 
 class IDDFSAlgorithm(Algorithm):
-    def search(self, tree: SearchTree) -> Tuple[int, List[int], int]:
+    def search(self, tree: SearchTree) -> Tuple[int, List[Action], int]:
         test_tree = deepcopy(tree)
         expanded = 0
 

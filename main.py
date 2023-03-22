@@ -15,15 +15,15 @@ from src.state import State
 def get_algorithm(search_settings):
     match search_settings["algorithm"]:
         case "bfs":
-            return BfsAlgorithm()
+            return BfsAlgorithm(), False
         case "dfs":
-            return DfsAlgorithm()
+            return DfsAlgorithm(), False
         case "greedy":
-            return GreedyAlgorithm()
+            return GreedyAlgorithm(), False
         case "A*":
-            return AStarAlgorithm()
+            return AStarAlgorithm(), False
         case "iddfs":
-            return IDDFSAlgorithm(search_settings["depth"], lambda depth: depth + search_settings["update_depth"])
+            return IDDFSAlgorithm(search_settings["depth"], lambda depth: depth + search_settings["update_depth"]), True
         case _:
             raise ValueError("Unsupported search algorithm")
 
@@ -67,10 +67,10 @@ def main():
     g: State = FillZoneGraphState(a)
 
     search_settings = config["search_settings"]
-    algorithm = get_algorithm(search_settings)
+    algorithm, flag = get_algorithm(search_settings)
     heuristic = get_heuristic(search_settings)
 
-    search_tree: SearchTree = SearchTree(g, heuristic)
+    search_tree: SearchTree = SearchTree(g, heuristic, flag)
 
     expanded, solution, cost = search_tree.search(algorithm)
 
