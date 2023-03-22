@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import functools
 from copy import deepcopy
-from typing import Set
+from typing import Set, Tuple, List
 
 from .data_structures import Node
 from .heuristics import Heuristic
@@ -20,7 +20,7 @@ class SearchTree:
     def get_heuristic(self):
         return self._heuristic
 
-    def search(self, algorithm) -> int:
+    def search(self, algorithm) -> Tuple[int, List[int], int]:
         return algorithm.search(self)
 
     def __deepcopy__(self, memo):
