@@ -46,6 +46,9 @@ class Algorithm(ABC):
 
         return expanded, [], 0
 
+    def is_iterative(self):
+        return False
+
     def _create_frontier(self):
         raise NotImplementedError()
 
@@ -128,6 +131,9 @@ class IDDFSAlgorithm(Algorithm):
             expanded += result[0]
 
         return expanded + result[0], result[1], result[2]
+
+    def is_iterative(self):
+        return True
 
     def __init__(self, depth: int, update_depth: Callable[[int], int]):
         self._depth = depth

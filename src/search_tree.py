@@ -10,9 +10,10 @@ from .state import State
 
 
 class SearchTree:
-    def __init__(self, initial_state: State, heuristic: Heuristic, depth_in_eq: bool):
+    def __init__(self, initial_state: State, heuristic: Heuristic, algorithm):
         self._heuristic = heuristic
-        self._root = STNode(self, initial_state, 0, None, None, depth_in_eq)
+        self._root = STNode(self, initial_state, 0, None, None, algorithm.is_iterative())
+        self._algorithm = algorithm
 
     def get_root(self):
         return self._root
@@ -20,8 +21,8 @@ class SearchTree:
     def get_heuristic(self):
         return self._heuristic
 
-    def search(self, algorithm) -> Tuple[int, List[int], int]:
-        return algorithm.search(self)
+    def search(self) -> Tuple[int, List[int], int]:
+        return self._algorithm.search(self)
 
     def __deepcopy__(self, memo):
         cls = self.__class__
