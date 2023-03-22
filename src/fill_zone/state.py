@@ -1,18 +1,20 @@
 from copy import deepcopy
-from typing import Set
+from typing import Set, List
+
+import networkx as nx
 
 from .action import FillZoneAction
 from src.state import State
 from src.data_structures import Node
 
 
-class FillZoneState(State):
-
-    def __init__(self, root: Node):
+class FillZoneGraphState(State):
+    def __init__(self, graph: nx.Graph, root: Node):
+        self._graph = graph
         self._root = root
 
     def is_solution(self) -> bool:
-        return len(self._root.neighbors) == 0
+        return self._graph.number_of_nodes() == 1
 
     def is_dead(self) -> bool:
         return False
@@ -28,8 +30,8 @@ class FillZoneState(State):
         new_state: FillZoneGraphState = deepcopy(self)
         new_state._root.color = action.get_color()
         for n in new_state._root.neighbors.copy():
-            if n.color == action:
-                self._merge_to_root(n)
+            if n.color == action.get_color():
+                new_state._merge_to_root(n)
         return new_state
 
     def _merge_to_root(self, child: Node):
