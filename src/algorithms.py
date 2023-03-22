@@ -7,14 +7,15 @@ from .search_tree import SearchTree, STNode
 
 
 def get_solution(node: STNode) -> List[Action]:
-    solution = [node.get_action()]
+    action = node.get_action()
     parent = node.get_parent()
 
-    while parent is not None:
+    solution = [action]
+
+    while parent is not None and action is not None:
         solution.append(parent.get_action())
         parent = parent.get_parent()
-
-    solution.pop()
+        action = parent.get_action()
 
     solution.reverse()
     return solution

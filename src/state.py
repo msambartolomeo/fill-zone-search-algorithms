@@ -19,6 +19,3 @@ class State(ABC):
 
     def apply(self, action: Action) -> State:
         raise NotImplementedError()
-
-    # transition model
-    # cost function
