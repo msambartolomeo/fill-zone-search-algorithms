@@ -5,6 +5,7 @@ from queue import PriorityQueue
 from typing import Set
 
 from src.fill_zone.data_structures import Node
+from .action import Action
 from .heuristics import Heuristic
 from .state import State
 
@@ -73,10 +74,10 @@ class STNode:  # Search Tree Node
         return str(self._state)
 
     def expand(self) -> Set[STNode]:
-        colors = self._state.available_colors()
+        actions: Set[Action] = self._state.get_possible_actions()
         new_nodes: Set[STNode] = set()
-        for c in colors:
-            new_state: Node = self._state.change_color(c)
+        for a in actions:
+            new_state: State = self._state.apply(a)
             new_node: STNode = STNode(self._search_tree, new_state, self._cost + 1, self)
             self.add_child(new_node)
             new_nodes.add(new_node)

@@ -7,6 +7,7 @@ from src.heuristics import Heuristic
 
 
 class DijkstraHeuristic(Heuristic):
+    # TODO: Check
     @staticmethod
     def calculate(state: FillZoneGraphState) -> int:
         distances = {state: 0}
