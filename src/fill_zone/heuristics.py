@@ -52,3 +52,10 @@ class CombinationHeuristic(Heuristic):
     @staticmethod
     def calculate(state: FillZoneGraphState) -> int:
         return max([EccentricityHeuristic.calculate(state), ColorCountHeuristic.calculate(state)])
+
+
+class NodeCountHeuristic(Heuristic):
+    """Not admissible"""
+    @staticmethod
+    def calculate(state: FillZoneGraphState) -> int:
+        return len(state.graph.nodes)

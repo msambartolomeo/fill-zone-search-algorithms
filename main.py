@@ -5,7 +5,7 @@ import sys
 import numpy as np
 
 from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
-from src.fill_zone.heuristics import ColorCountHeuristic, EccentricityHeuristic, CombinationHeuristic
+from src.fill_zone.heuristics import ColorCountHeuristic, EccentricityHeuristic, CombinationHeuristic, NodeCountHeuristic
 from src.fill_zone.state import FillZoneGraphState
 from src.heuristics import DummyHeuristic
 from src.result import Result
@@ -38,6 +38,8 @@ def get_heuristic(search_settings):
             return ColorCountHeuristic()
         case "combination":
             return CombinationHeuristic()
+        case "node_count":
+            return NodeCountHeuristic()
         case _:
             return DummyHeuristic()
 
@@ -66,6 +68,8 @@ def main():
 
     a = generate_board(board_settings)
     g: State = FillZoneGraphState(a)
+
+    print(f"Node count: {NodeCountHeuristic.calculate(g)}")
 
     search_settings = config["search_settings"]
     algorithm = get_algorithm(search_settings)
