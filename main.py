@@ -86,9 +86,9 @@ def run_fill_zone(config):
 
     search_settings = config["search_settings"]
     algorithm = get_algorithm(search_settings)
+    heuristic = get_fill_zone_heuristic(search_settings)
 
     search_tree: SearchTree = SearchTree(g, heuristic)
-
     result: Result = search_tree.search(algorithm)
 
     print("expanded nodes: ", result.expanded_nodes)
@@ -104,6 +104,7 @@ def run_eight_puzzle(config):
     search_settings = config["search_settings"]
     heuristic = get_eight_puzzle_heuristic(search_settings)
     algorithm = get_algorithm(search_settings)
+    print(heuristic)
 
     search_tree: SearchTree = SearchTree(s, heuristic)
     result: Result = search_tree.search(algorithm)
