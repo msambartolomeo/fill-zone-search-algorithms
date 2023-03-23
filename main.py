@@ -5,7 +5,7 @@ from typing import Tuple, List
 
 import numpy as np
 
-from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm
+from src.algorithms import BfsAlgorithm, DfsAlgorithm, GreedyAlgorithm, AStarAlgorithm, IDDFSAlgorithm
 from src.fill_zone.heuristics import ColorCountHeuristic, EccentricityHeuristic, CombinationHeuristic, \
     NodeCountHeuristic
 from src.fill_zone.state import FillZoneGraphState
@@ -27,6 +27,8 @@ def get_algorithm(search_settings):
             return GreedyAlgorithm()
         case "A*":
             return AStarAlgorithm()
+        case "iddfs":
+            return IDDFSAlgorithm(search_settings["depth"], lambda depth: depth + search_settings["update_depth"])
         case _:
             raise ValueError("Unsupported search algorithm")
 
@@ -88,8 +90,9 @@ def run_fill_zone(config):
     algorithm = get_algorithm(search_settings)
     heuristic = get_fill_zone_heuristic(search_settings)
 
-    search_tree: SearchTree = SearchTree(g, heuristic)
-    result: Result = search_tree.search(algorithm)
+    search_tree: SearchTree = SearchTree(g, heuristic, algorithm)
+
+    result: Result = search_tree.search()
 
     print("expanded nodes: ", result.expanded_nodes)
     print("solution found: ", result.solution)

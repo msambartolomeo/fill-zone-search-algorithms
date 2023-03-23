@@ -72,8 +72,8 @@ class FillZoneGraphState(State):
     def __hash__(self):
         return hash((nx.weisfeiler_lehman_graph_hash(self._graph), self._root))
 
-    def get_neighbors(self, node: Node):
-        return self.graph[node]
+    def __repr__(self):
+        return f"Color: {self._root.color}"
 
     @property
     def root(self):

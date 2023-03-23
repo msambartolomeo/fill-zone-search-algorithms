@@ -1,6 +1,7 @@
 from abc import ABC
+from copy import deepcopy
 from queue import PriorityQueue, Queue
-from typing import List, Tuple, Set
+from typing import List, Tuple, Set, Callable
 
 from .action import Action
 from .result import Result
@@ -43,6 +44,9 @@ class Algorithm(ABC):
                 self._add_to_frontier(frontier, child)
 
         return Result.empty(expanded)
+
+    def is_iterative(self):
+        return False
 
     def _create_frontier(self):
         raise NotImplementedError()
@@ -128,3 +132,41 @@ class AStarAlgorithm(Algorithm):
 
     def _frontier_length(self, frontier: PriorityQueue[Tuple[int, STNode]]) -> int:
         return frontier.qsize()
+
+
+class IDDFSAlgorithm(Algorithm):
+    def search(self, tree: SearchTree) -> Result:
+        test_tree = deepcopy(tree)
+        expanded = 0
+
+        while (result := super().search(test_tree)).is_empty():
+            self._depth = self._update_depth(self._depth)
+            test_tree = deepcopy(tree)
+            expanded += result.expanded_nodes
+
+        result.expanded_nodes += expanded
+
+        return result
+
+    def is_iterative(self):
+        return True
+
+    def __init__(self, depth: int, update_depth: Callable[[int], int]):
+        self._depth = depth
+        self._update_depth = update_depth
+
+    def _create_frontier(self) -> List[STNode]:
+        return []
+
+    def _add_to_frontier(self, frontier: List[STNode], node: STNode):
+        if node.get_cost() <= self._depth:
+            frontier.append(node)
+
+    def _get_from_frontier(self, frontier: List[STNode]) -> STNode:
+        return frontier.pop()
+
+    def _frontier_is_empty(self, frontier: List[STNode]) -> bool:
+        return len(frontier) == 0
+
+    def _frontier_length(self, frontier: List[STNode]) -> int:
+        return len(frontier)
