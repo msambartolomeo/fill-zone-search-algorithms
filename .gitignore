@@ -132,4 +132,5 @@ dmypy.json
 .idea/
 
 config.json
+tests/test_config.json
 figs/

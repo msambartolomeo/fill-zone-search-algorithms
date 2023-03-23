@@ -1,5 +1,4 @@
 import heapq
-from numbers import Number
 from typing import Set, Dict
 
 from src.fill_zone.data_structures import Node
@@ -49,3 +48,14 @@ class ColorCountHeuristic(Heuristic):
         return count
 
 
+class CombinationHeuristic(Heuristic):
+    @staticmethod
+    def calculate(state: FillZoneGraphState) -> int:
+        return max([EccentricityHeuristic.calculate(state), ColorCountHeuristic.calculate(state)])
+
+
+class NodeCountHeuristic(Heuristic):
+    """Not admissible"""
+    @staticmethod
+    def calculate(state: FillZoneGraphState) -> int:
+        return len(state.graph.nodes)

@@ -1,0 +1,13 @@
+{
+  "logging_level": "DEBUG",
+  "board_settings": {
+    "type": "static",
+    "board": "4,5,5,3;4,3,0,3;3,4,0,2;1,5,1,0",
+    "board_size": 12,
+    "color_count": 6
+  },
+  "search_settings": {
+    "algorithm": "bfs",
+    "heuristic": "eccentricity"
+  }
+}
