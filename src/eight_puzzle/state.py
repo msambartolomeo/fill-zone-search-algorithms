@@ -8,19 +8,38 @@ from src.state import State
 
 
 class EightPuzzleMatrixState(State):
-    _GOAL = [[1, 2, 3], [8, None, 4], [7, 6, 5]]
 
-    def __init__(self, matrix: List[List[Optional[int]]]):
+    def __init__(self, matrix: List[List[Optional[int]]], goal: List[List[Optional[int]]]):
         if len(matrix) != 3 or len(matrix[0]) != 3:
             raise ValueError()
-
+        self._goal = goal
         self._state: List[List[Optional[int]]] = matrix
 
     def is_solution(self) -> bool:
-        return self._state == self._GOAL
+        return self._state == self._goal
 
     def is_dead(self) -> bool:
         return False
+
+    def get_goal(self) -> List[List[int]]:
+        return self._goal
+
+    def get_matrix(self) -> List[List[int]]:
+        return self._state
+
+    def __eq__(self, other):
+        return isinstance(other, EightPuzzleMatrixState) and self.get_matrix() == other.get_matrix()
+
+    def __hash__(self):
+        m = self._state
+        ans = ""
+        for i in range(len(m)):
+            for j in range(len(m[0])):
+                if m[i][j] is None:
+                    ans += "0"
+                else:
+                    ans += m[i][j].__str__()
+        return hash(ans)
 
     def get_possible_actions(self) -> Set[EightPuzzleAction]:
         actions: Set[EightPuzzleAction] = set()
@@ -34,7 +53,7 @@ class EightPuzzleMatrixState(State):
             actions.add(EightPuzzleAction.RIGHT)
         return actions
 
-    def apply(self, action: EightPuzzleAction) -> EightPuzzleMatrixState:  # Should I return State or EightPuzzleMatrixState
+    def apply(self, action: EightPuzzleAction) -> EightPuzzleMatrixState:
         new_state: EightPuzzleMatrixState = deepcopy(self)
         none_pos = self._find_none()
         if none_pos is None:
