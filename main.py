@@ -14,7 +14,7 @@ from src.result import Result
 from src.search_tree import SearchTree
 from src.state import State
 from src.eight_puzzle.state import EightPuzzleMatrixState
-from src.eight_puzzle.heuristics import OutOfPlaceHeuristic
+from src.eight_puzzle.heuristics import OutOfPlaceHeuristic, ManhattanHeuristic
 
 
 def get_algorithm(search_settings):
@@ -48,13 +48,15 @@ def get_fill_zone_heuristic(search_settings):
             return DummyHeuristic()
 
 
-def get_eight_zone_heuristic(search_settings):
+def get_eight_puzzle_heuristic(search_settings):
     if "heuristic" not in search_settings:
         return DummyHeuristic()
 
     match search_settings["heuristic"]:
-        case "out":
+        case "out_of_place":
             return OutOfPlaceHeuristic()
+        case "manhattan":
+            return ManhattanHeuristic()
         case _:
             return DummyHeuristic()
 
@@ -84,7 +86,6 @@ def run_fill_zone(config):
 
     search_settings = config["search_settings"]
     algorithm = get_algorithm(search_settings)
-    heuristic = get_fill_zone_heuristic(search_settings)
 
     search_tree: SearchTree = SearchTree(g, heuristic)
 
@@ -99,9 +100,9 @@ def run_fill_zone(config):
 def run_eight_puzzle(config):
     board_settings = config["board_settings"]
     boards = generate_eight_puzzle_board(board_settings)
-    s: State = EightPuzzleMatrixState(boards[0], boards[1])
+    s: EightPuzzleMatrixState = EightPuzzleMatrixState(boards[0], boards[1])
     search_settings = config["search_settings"]
-    heuristic = get_fill_zone_heuristic(search_settings)
+    heuristic = get_eight_puzzle_heuristic(search_settings)
     algorithm = get_algorithm(search_settings)
 
     search_tree: SearchTree = SearchTree(s, heuristic)
