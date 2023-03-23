@@ -9,16 +9,14 @@ from .search_tree import SearchTree, STNode
 
 
 def get_solution(node: STNode) -> List[Action]:
-    action = node.get_action()
+    solution = [node.get_action()]
     parent = node.get_parent()
 
-    solution = [action]
-
-    while parent is not None and action is not None:
+    while parent is not None:
         solution.append(parent.get_action())
         parent = parent.get_parent()
-        action = parent.get_action()
 
+    solution.pop()
     solution.reverse()
     return solution
 
@@ -137,16 +135,18 @@ class AStarAlgorithm(Algorithm):
 
 
 class IDDFSAlgorithm(Algorithm):
-    def search(self, tree: SearchTree) -> Tuple[int, List[Action], int]:
+    def search(self, tree: SearchTree) -> Result:
         test_tree = deepcopy(tree)
         expanded = 0
 
-        while len((result := super().search(test_tree))[1]) == 0:
+        while (result := super().search(test_tree)).is_empty():
             self._depth = self._update_depth(self._depth)
             test_tree = deepcopy(tree)
-            expanded += result[0]
+            expanded += result.expanded_nodes
 
-        return expanded + result[0], result[1], result[2]
+        result.expanded_nodes += expanded
+
+        return result
 
     def is_iterative(self):
         return True

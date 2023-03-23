@@ -8,7 +8,7 @@ from src.board import Board
 from src.utils import get_all_algorithms, get_all_fill_zone_heuristics
 from src.search_tree import SearchTree
 from src.fill_zone.state import FillZoneGraphState
-from main import generate_board
+from main import generate_fill_zone_board
 
 
 def test_all(boards: List[Board]):
@@ -36,7 +36,7 @@ def test():
         "type": "random"
     }
     for _ in range(config["board_count"]):
-        b = Board(generate_board(settings))
+        b = Board(generate_fill_zone_board(settings))
         boards.append(b)
 
     test_all(boards)

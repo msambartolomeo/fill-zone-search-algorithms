@@ -1,0 +1,12 @@
+{
+  "logging_level": "INFO",
+  "game": "8-puzzle",
+  "board_settings": {
+    "board": "5,7,3;8,2,None;1,6,4",
+    "goal": "1,2,3;8,None,4;7,6,5"
+  },
+  "search_settings": {
+    "algorithm": "A*",
+    "heuristic": "manhattan"
+  }
+}
