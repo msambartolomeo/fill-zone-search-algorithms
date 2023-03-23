@@ -4,7 +4,9 @@ from copy import deepcopy
 from typing import List, Tuple
 from queue import Queue
 from main import generate_board
+from src.fill_zone.action import FillZoneAction
 
+# TODO: move these methods to avoid code repetition
 dxy = [
     (0, 1),
     (0, -1),
@@ -66,10 +68,10 @@ class Board:
             setattr(result, k, deepcopy(v, memo))
         return result
 
-    def check_solution(self, colors: List[int]) -> bool:
+    def check_solution(self, sol: List[FillZoneAction]) -> bool:
         copy: Board = deepcopy(self)
-        for c in colors:
-            copy.change_color(c)
+        for a in sol:
+            copy.change_color(a.get_color())
         return copy.is_solved()
 
     def get_matrix(self) -> List[List[int]]:
