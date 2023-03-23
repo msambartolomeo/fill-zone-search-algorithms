@@ -28,7 +28,7 @@ def get_algorithm(search_settings):
             raise ValueError("Unsupported search algorithm")
 
 
-def get_heuristic(search_settings):
+def get_fill_zone_heuristic(search_settings):
     if "heuristic" not in search_settings:
         return DummyHeuristic()
 
