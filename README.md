@@ -36,7 +36,9 @@ A continuación se detalla el formato del archivo de configuración.
   - `board_size`: (type = "random") numero entero que representa el lado de la matriz a generar
   - `color_count`: (type = "random") numero entero que representa la cantidad de colores de la matriz a generar
 - `search_settings`: configuración sobre el algoritmo a utilizar para hacer la búsqueda
-  - `algorithm`: algoritmo a utilizar para la búsqueda -- Options(bfs, dfs, A*, greedy) (iddfs se encuentra en su propia branch)
+  - `algorithm`: algoritmo a utilizar para la búsqueda -- Options(bfs, dfs, A*, greedy, iddfs)
   - `heuristic`: heurística a utilizar si el algoritmo lo utiliza -- Options(eccentricity, color_count)
+  - `depth`: (algorithm = "iddfs") numero entero que representa la profundidad inicial para iddfs
+  - `update_depth`: (algorithm = "iddfs") numero entero que define cuanto se amuenta la profundidad despues de cada iteracion
   
 De todas formas se incluye un [archivo de configuración de ejemplo](config.example.json)
