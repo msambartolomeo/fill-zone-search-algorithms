@@ -77,3 +77,10 @@ class EightPuzzleMatrixState(State):
         for k, v in self.__dict__.items():
             setattr(result, k, deepcopy(v, memo))
         return result
+
+    def position(self, number: int) -> Optional[Tuple[int, int]]:
+        for i in range(len(self._state)):
+            for j in range(len(self._state[0])):
+                if self._state[i][j] == number:
+                    return i, j
+        return None
