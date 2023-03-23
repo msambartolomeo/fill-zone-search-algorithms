@@ -1,5 +1,6 @@
 {
   "logging_level": "DEBUG",
+  "game": "fill-zone",
   "board_settings": {
     "type": "static",
     "board": "4,5,5,3;4,3,0,3;3,4,0,2;1,5,1,0",
