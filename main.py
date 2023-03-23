@@ -104,7 +104,6 @@ def run_eight_puzzle(config):
     search_settings = config["search_settings"]
     heuristic = get_eight_puzzle_heuristic(search_settings)
     algorithm = get_algorithm(search_settings)
-    print(heuristic)
 
     search_tree: SearchTree = SearchTree(s, heuristic)
     result: Result = search_tree.search(algorithm)
