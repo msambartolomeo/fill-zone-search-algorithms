@@ -54,3 +54,9 @@ Para "8-puzzle":
   - `heuristic`: heurística a utilizar si el algoritmo lo utiliza -- Options(manhattan, out_of_place)
   
 De todas formas se incluyen archivos de configuracion de ejemplo para el [fill-zone](config_fill_zone.example.json) y para el [8-puzzle](config_8_puzzle.example.json)
+
+## Gráficos
+
+```sh
+pipenv run python plot.py
+```
