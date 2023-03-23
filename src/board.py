@@ -3,7 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import List, Tuple
 from queue import Queue
-from main import generate_board
+from main import generate_fill_zone_board
 from src.fill_zone.action import FillZoneAction
 
 # TODO: move these methods to avoid code repetition
@@ -79,7 +79,7 @@ class Board:
 
     @staticmethod
     def from_string(s: str) -> Board:
-        m = generate_board(s)
+        m = generate_fill_zone_board(s)
         return Board(m)
 
 
