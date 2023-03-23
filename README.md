@@ -37,6 +37,6 @@ A continuación se detalla el formato del archivo de configuración.
   - `color_count`: (type = "random") numero entero que representa la cantidad de colores de la matriz a generar
 - `search_settings`: configuración sobre el algoritmo a utilizar para hacer la búsqueda
   - `algorithm`: algoritmo a utilizar para la búsqueda -- Options(bfs, dfs, A*, greedy) (iddfs se encuentra en su propia branch)
-  - `heuristic`: heurística a utilizar si el algoritmo lo utiliza -- Options(eccentricity, color_count)
+  - `heuristic`: heurística a utilizar si el algoritmo lo utiliza -- Options(eccentricity, color_count, combination, node_count)
   
 De todas formas se incluye un [archivo de configuración de ejemplo](config.example.json)
