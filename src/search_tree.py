@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import functools
 from copy import deepcopy
-from typing import Set, Optional, Tuple, List
+from typing import Set, Optional
 
 from .action import Action
 from .heuristics import Heuristic
+from .result import Result
 from .state import State
 
 
@@ -21,7 +22,7 @@ class SearchTree:
     def get_heuristic(self):
         return self._heuristic
 
-    def search(self) -> Tuple[int, List[int], int]:
+    def search(self) -> Result:
         return self._algorithm.search(self)
 
     def __deepcopy__(self, memo):
